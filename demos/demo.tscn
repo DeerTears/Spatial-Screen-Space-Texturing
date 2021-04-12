@@ -1,0 +1,274 @@
+[gd_scene load_steps=30 format=2]
+
+[ext_resource path="res://shaders/example_textures/1x1_alpha_checkerboard.png" type="Texture" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://shaders/example_textures/1x1_checkerboard.png" type="Texture" id=4]
+[ext_resource path="res://demos/scripts/Player.gd" type="Script" id=5]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+render_mode unshaded;
+// Renders a 2D tileable texture using visible polygons as a mask.
+// Remove blur from textures by unchecking \"Detect 3D\" and \"Filter\" in Import.
+// Demo: https://github.com/DeerTears/Polygon-Mask-for-2D-Textures/
+
+uniform sampler2D tiling_texture;
+uniform float tiling_scale;
+const float DEFAULT_SCALE = 8.0;
+
+void fragment() {
+	vec2 uv = FRAGCOORD.xy;
+	vec2 tiling_uv = uv / (DEFAULT_SCALE * tiling_scale * -1.0);
+	vec4 texture_result = texture(tiling_texture, tiling_uv);
+	ALBEDO = vec3(TANGENT);
+	ALBEDO *= texture_result.rgb;
+	//ALPHA = texture_result.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/tiling_scale = 10.0
+shader_param/tiling_texture = ExtResource( 4 )
+
+[sub_resource type="CubeMesh" id=3]
+material = SubResource( 2 )
+
+[sub_resource type="Shader" id=4]
+code = "shader_type spatial;
+render_mode unshaded;
+// Renders a tileable 2D texture to screen, using spatial polygons as a mask.
+// Remove blur from textures by unchecking \"Detect 3D\" and \"Filter\" in Import.
+// Demo: https://github.com/DeerTears/Polygon-Mask-for-2D-Textures/
+
+uniform sampler2D tiling_texture;
+uniform float tiling_scale;
+const float DEFAULT_SCALE = 8.0;
+
+void fragment() {
+	vec2 uv = FRAGCOORD.xy;
+	vec2 tiling_uv = uv / (DEFAULT_SCALE * tiling_scale * -1.0);
+	vec4 texture_result = texture(tiling_texture, tiling_uv);
+	ALBEDO = texture_result.rgb;
+	ALPHA = texture_result.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/tiling_scale = 10.0
+shader_param/tiling_texture = ExtResource( 4 )
+
+[sub_resource type="CubeMesh" id=6]
+material = SubResource( 5 )
+
+[sub_resource type="Shader" id=7]
+code = "shader_type spatial;
+render_mode unshaded;
+// Renders a tileable 2D texture to screen, using spatial polygons as a mask.
+// Remove blur from textures by unchecking \"Detect 3D\" and \"Filter\" in Import.
+// Demo: https://github.com/DeerTears/Polygon-Mask-for-2D-Textures/
+
+uniform sampler2D tiling_texture;
+uniform float tiling_scale = 1.0;
+const float DEFAULT_SCALE = 8.0;
+
+void fragment() {
+	vec2 uv = FRAGCOORD.xy;
+	vec2 tiling_uv = uv / (DEFAULT_SCALE * tiling_scale * -1.0);
+	vec4 texture_result = texture(tiling_texture, tiling_uv);
+	ALBEDO = texture_result.rgb;
+	ALPHA = texture_result.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
+shader_param/tiling_scale = 1.0
+shader_param/tiling_texture = ExtResource( 2 )
+
+[sub_resource type="CapsuleMesh" id=9]
+material = SubResource( 8 )
+radial_segments = 8
+rings = 1
+
+[sub_resource type="Shader" id=10]
+code = "shader_type spatial;
+render_mode unshaded;
+// Renders a tileable 2D texture to screen, using spatial polygons as a mask.
+// Remove blur from textures by unchecking \"Detect 3D\" and \"Filter\" in Import.
+// Demo: https://github.com/DeerTears/Polygon-Mask-for-2D-Textures/
+
+uniform sampler2D tiling_texture;
+uniform float tiling_scale = 1.0;
+const float DEFAULT_SCALE = 8.0;
+
+void fragment() {
+	vec2 uv = FRAGCOORD.xy;
+	vec2 tiling_uv = uv / (DEFAULT_SCALE * tiling_scale * -1.0);
+	vec4 texture_result = texture(tiling_texture, tiling_uv);
+	ALBEDO = texture_result.rgb;
+	ALPHA = texture_result.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 10 )
+shader_param/tiling_scale = 2.0
+shader_param/tiling_texture = ExtResource( 2 )
+
+[sub_resource type="CapsuleMesh" id=12]
+material = SubResource( 11 )
+radial_segments = 8
+rings = 1
+
+[sub_resource type="SpatialMaterial" id=13]
+metallic = 1.0
+metallic_specular = 0.0
+metallic_texture = ExtResource( 4 )
+metallic_texture_channel = 4
+roughness = 0.5
+uv1_triplanar = true
+
+[sub_resource type="CubeMesh" id=14]
+material = SubResource( 13 )
+size = Vector3( 100, 1, 100 )
+
+[sub_resource type="ConvexPolygonShape" id=15]
+points = PoolVector3Array( -50, 0.5, 50, 50, 0.5, -50, 50, 0.5, 50, -50, 0.5, -50, -50, -0.5, 50, 50, -0.5, -50, 50, -0.5, 50, -50, -0.5, -50, 50, 0.5, 50, -50, 0.5, -50, 50, 0.5, -50, -50, 0.5, 50, 50, -0.5, 50, -50, -0.5, -50, 50, -0.5, -50, -50, -0.5, 50, 50, 0.5, 50, -50, -0.5, 50, -50, 0.5, 50, 50, -0.5, 50, 50, 0.5, -50, -50, -0.5, -50, -50, 0.5, -50, 50, -0.5, -50 )
+
+[sub_resource type="SpatialMaterial" id=16]
+flags_transparent = true
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="QuadMesh" id=17]
+material = SubResource( 16 )
+size = Vector2( 2, 2 )
+
+[sub_resource type="Shader" id=18]
+code = "shader_type spatial;
+render_mode unshaded;
+// Renders a tileable 2D texture to screen, using spatial polygons as a mask.
+// Remove blur from textures by unchecking \"Detect 3D\" and \"Filter\" in Import.
+// Demo: https://github.com/DeerTears/Polygon-Mask-for-2D-Textures/
+
+uniform sampler2D tiling_texture;
+uniform float tiling_scale = 1.0;
+const float DEFAULT_SCALE = 8.0;
+
+void fragment() {
+	vec2 uv = FRAGCOORD.xy;
+	vec2 tiling_uv = uv / (DEFAULT_SCALE * tiling_scale * -1.0);
+	vec4 texture_result = texture(tiling_texture, tiling_uv);
+	ALBEDO = texture_result.rgb;
+	ALPHA = texture_result.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=19]
+shader = SubResource( 18 )
+shader_param/tiling_scale = 15.0
+shader_param/tiling_texture = ExtResource( 3 )
+
+[sub_resource type="SphereMesh" id=20]
+material = SubResource( 19 )
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SpatialMaterial" id=21]
+albedo_texture = ExtResource( 4 )
+metallic_specular = 0.0
+
+[sub_resource type="SphereMesh" id=22]
+material = SubResource( 21 )
+radius = 1.1
+height = 1.1
+radial_segments = 16
+rings = 8
+is_hemisphere = true
+
+[sub_resource type="CapsuleShape" id=23]
+radius = 0.5
+
+[sub_resource type="ProceduralSky" id=24]
+
+[sub_resource type="Environment" id=25]
+background_mode = 2
+background_sky = SubResource( 24 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="TangentCube" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="BlackAndWhiteCube" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -2 )
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="DitheringGBA1" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 10, 0, 10 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="DitheringGBA2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7, 0, 10 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="ZoomedGBA" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4, 0, 10 )
+mesh = SubResource( 12 )
+material/0 = null
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.473289, 0.880907, 0, -0.880907, 0.473289, -12.4445, 0, -1.0922 )
+
+[node name="OrthoCamera" type="Camera" parent="."]
+transform = Transform( -0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, 0.5, -0.5, 12, 5, -3 )
+projection = 1
+size = 10.0
+
+[node name="Floor" type="StaticBody" parent="."]
+
+[node name="Floor" type="MeshInstance" parent="Floor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0 )
+mesh = SubResource( 14 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="Floor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0 )
+shape = SubResource( 15 )
+
+[node name="Painting" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4 )
+mesh = SubResource( 17 )
+material/0 = null
+
+[node name="GodotBall" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9 )
+mesh = SubResource( 20 )
+material/0 = null
+
+[node name="GodotVerts" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 9 )
+mesh = SubResource( 22 )
+material/0 = null
+
+[node name="Player" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.371016, 0 )
+script = ExtResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Player"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 23 )
+
+[node name="Head" type="Spatial" parent="Player"]
+
+[node name="Camera" type="Camera" parent="Player/Head"]
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 25 )
