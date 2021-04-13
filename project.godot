@@ -14,8 +14,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Polygon Mask for 2D Textures"
-config/description="Renders a tileable 2D texture to screen, using spatial polygons as a mask."
+config/name="Spatial Screen Space Texturing"
+config/description="Demo for a Godot shader that renders a tileable 2D texture to screen in 3D, using spatial polygons as a mask. Learn more here: https://github.com/DeerTears/Spatial-Screen-Space-Texturing"
 run/main_scene="res://demos/demo.tscn"
 config/icon="res://icon.png"
 
